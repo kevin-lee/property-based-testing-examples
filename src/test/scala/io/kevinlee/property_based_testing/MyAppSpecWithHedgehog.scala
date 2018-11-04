@@ -9,40 +9,41 @@ import hedgehog._
   */
 object MyAppSpecWithHedgehog extends Properties {
   override def tests: List[Prop] = List(
-//    Prop("add(a, b) should return a + b", testAdd.withTests(200))
-    Prop("add(Int, Int): has identity element", testIdentity)
-  , Prop("add(Int, Int): test commutative property", testCommutative)
-  , Prop("add(Int, Int): test associative property", testAssociative)
+//    Test("add(a, b) should return a + b", testAdd.withTests(200))
+    example("add(1, 9) should return 10", testOnePlusNine)
+  , property("add(Int, Int): has identity element", testIdentity)
+  , property("add(Int, Int): test commutative property", testCommutative)
+  , property("add(Int, Int): test associative property", testAssociative)
   )
 
-  def testAdd: Property[Unit] = for {
+  def testOnePlusNine: Result =
+    MyApp.add(1, 9) ==== 10
+
+  def testAdd: Property = for {
     x <- Gen.int(Range.linear(1, 1000)).forAll
     y <- Gen.int(Range.linear(1, 1000)).forAll
 //    _ = println(s"x: $x, y: $y")
-    _ <- MyApp.add(x, y) ==== x + y
-  } yield ()
+  } yield MyApp.add(x, y) ==== x + y
 
-  def testIdentity: Property[Unit] = for {
+  def testIdentity: Property = for {
     x <- Gen.int(Range.linear(-1000, 1000)).forAll
 //    _ = println(s"x: $x")
     /* x + 0 == x */
-    _ <- MyApp.add(x, 0) ==== x
-  } yield ()
+  } yield MyApp.add(x, 0) ==== x
 
-  def testCommutative: Property[Unit] = for {
+  def testCommutative: Property = for {
     x <- Gen.int(Range.linear(-1000, 1000)).forAll
     y <- Gen.int(Range.linear(-1000, 1000)).forAll
 //    _ = println(s"x: $x / y: $y")
     /* x + y == y + x */
-    _ <- MyApp.add(x, y) ==== MyApp.add(y, x)
-  } yield ()
+  } yield MyApp.add(x, y) ==== MyApp.add(y, x)
 
-  def testAssociative: Property[Unit] = for {
+  def testAssociative: Property = for {
     x <- Gen.int(Range.linear(-1000, 1000)).forAll
     y <- Gen.int(Range.linear(-1000, 1000)).forAll
     z <- Gen.int(Range.linear(-1000, 1000)).forAll
 //    _ = println(s"x: $x / y: $y / z: $z")
     /* ((x + y) + z) ==== (x + (y + z)) */
-    _ <- MyApp.add(MyApp.add(x, y), z)  ==== MyApp.add(x, MyApp.add(y, z))
-  } yield ()
+  } yield  MyApp.add(MyApp.add(x, y), z)  ==== MyApp.add(x, MyApp.add(y, z))
+
 }
