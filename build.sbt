@@ -33,7 +33,7 @@ lazy val projectDependencies = Seq(
   , "org.scalacheck" %% "scalacheck" % "1.13.4" % "test"
 )
 
-val hedgehogVersion = "de41f36696f9ee6f134f1c13ec40ad49ad9e3e25"
+val hedgehogVersion = "7ab54a77ab5a96f27491e5e0b80d4b0446c8e7ca"
 val hedgehogLibs = Seq(
     "hedgehog" %% "hedgehog-core" % hedgehogVersion
   , "hedgehog" %% "hedgehog-runner" % hedgehogVersion

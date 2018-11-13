@@ -9,8 +9,8 @@ import hedgehog._
   */
 object MyAppSpecWithHedgehog extends Properties {
   override def tests: List[Prop] = List(
-//    Test("add(a, b) should return a + b", testAdd.withTests(200))
     example("add(1, 9) should return 10", testOnePlusNine)
+  , property("add(a, b) should return a + b", testAdd).withTests(200)
   , property("add(Int, Int): has identity element", testIdentity)
   , property("add(Int, Int): test commutative property", testCommutative)
   , property("add(Int, Int): test associative property", testAssociative)
